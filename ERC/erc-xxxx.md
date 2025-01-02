@@ -1,7 +1,7 @@
 ---
 eip: XXXX
-title: Offline payment transactions via USSD
-description: Offline payment transactions via USSD, using telecom networks.
+title: Pay with USSD
+description: Offline payment transactions via USSD.
 author: sirawt (@MASDXI)
 discussions-to: https://ethereum-magicians.org/t/eip-xxxx/
 status: Draft
