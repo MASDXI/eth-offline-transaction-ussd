@@ -31,9 +31,9 @@ Use cases for offline payments including
 The key words “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”, “SHOULD”, “SHOULD NOT”, “RECOMMENDED”, “NOT RECOMMENDED”, “MAY”, and “OPTIONAL” in this document are to be interpreted as described in RFC 2119 and RFC 8174.
 
 
-> **MUST** support to pay with `address` *OPTIONAL* `ens`,`phone number`, `email`, `username` or `unique Id`
-not covering transaction to smart contract with USSD cause application **MAY** update the data frequently
-mapped phone number to public address see: https://github.com/camaraproject/BlockchainPublicAddress 
+> **MUST** support to pay with `address` **OPTIONAL** `ens`,`phone number`, `email`, `username` or `unique Id`  
+not covering transaction to smart contract with USSD cause application **MAY** update the data frequently.  
+mapped phone number to public address see: https://github.com/camaraproject/BlockchainPublicAddress  
 
 
 ### Partial-sync approach
