@@ -119,7 +119,7 @@ not covering transaction to smart contract with USSD cause application **MAY** u
 Explores sending signed transactions to a forwarder without requiring prior synchronization of the `nonce`, and other, while ensuring resistance to replay attacks even in the absence of direct synchronization with the blockchain network.
 
 <!--  Custodian: ERC-681 URL as payload? -->
-<!--  Non-Custodian: Account-Abstraction potentially solve? -->
+<!--  Non-Custodian: Account-Abstraction potentially solve? ERC-4337, ERC-7702 -->
 
 ## Rationale
 
