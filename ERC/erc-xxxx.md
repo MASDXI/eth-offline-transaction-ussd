@@ -48,16 +48,17 @@ Partially synchronizing with the blockchain network to ensure the client device 
 
 ``` json
 "response": {
-    "nonce": "<HEX_VALUE>",
     "balance": "<HEX_VALUE>",
     "currency": "<STRING>",
-    "transactionHash": "<HEX_STRING>"
+    "transactionHash": "<HEX_STRING>",
+    "nonce": "<HEX_VALUE>",
 }
 ```
 
-When transferring native token the `currency` key **MUST** be `0x000...000` or `null`.  
-The callback **MUST** return be returns the latest `nonce`, `balance` of `currency` and a `transactionHash` 
-back to the `sender` if transaction successfully otherwise response `error` message.
+`signedTransaction` key is **REQUIRED** for non-custodial wallets.  
+When transferring native tokens, the `currency` key **MUST** be `0x000...000` or `null`.  
+The callback **MUST** return the latest `balance` of the specified `currency` and a `transactionHash` for both custodial and non-custodial wallets. Additionally, the `nonce` is **REQUIRED** only for non-custodial wallets.  
+If the transaction is successful, these details are returned to the `sender`; otherwise, an `error` message is provided.
 
 - getBalance
   
@@ -75,8 +76,8 @@ back to the `sender` if transaction successfully otherwise response `error` mess
 }
 ```
 
-When get balance of native token the `currency` key **MUST** be `0x000...000` or `null`.
-The callback **MUST** return be return the latest `balance` of given `currency`.
+When get balance of native tokens, the `currency` key **MUST** be `0x000...000` or `null`.
+The callback **MUST** return the latest `balance` of the specified `currency`.
 The currency **SHOULD** be the token contract `address` or token `symbol`.
 
 > **MUST** support to pay with `address` **OPTIONAL** `ens`,`phone number`, `email`, `username` or `unique Id`  
