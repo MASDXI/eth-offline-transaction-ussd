@@ -17,8 +17,7 @@ something similar to the ERC-7798: Tap to pay?
 -->
 
 ## Motivation
-
-In scenarios with limited or unreliable internet access, traditional digital payment methods may not be feasible. Unstructured Supplementary Service Data (USSD) provides a vital solution by enabling offline transactions like payments, transfers, and balance inquiries without requiring internet connectivity or advanced smartphones. Its simplicity and broad compatibility with basic mobile devices and Electronic Draft Capture (EDC) device make USSD an essential tool for mobile payments, particularly in underserved areas, supporting financial inclusion and broader access to digital financial services.
+In scenarios with limited or unreliable internet access, traditional digital payment methods may not be feasible. Unstructured Supplementary Service Data (USSD) provides a vital solution by enabling offline transactions like payments, transfers, and balance inquiries without requiring internet connectivity. Its simplicity and broad compatibility with basic mobile devices and Electronic Draft Capture (EDC) device make USSD an essential tool for mobile payments, particularly in underserved areas, supporting financial inclusion and broader access to digital financial services.
 
 Use cases for offline payments including
 - Credit
@@ -63,6 +62,7 @@ No backward compatibility issues found.
 
 > TODO example implementation source code  
 > some useful source see:   
+> https://github.com/krypt007/kotanipay-USSD.git
 > https://docs.oracle.com/communications/F83448_01/doc.1500/ccc_ussd_gw_tg.pdf  
 > https://help.webexconnect.io/docs/sending-and-receiving-sms-using-sandbox  
 > https://github.com/SedemQuame/fido-ussd-app  
