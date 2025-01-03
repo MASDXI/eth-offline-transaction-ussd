@@ -23,6 +23,7 @@ Use cases for offline payments including
 - Insurance
 - Loyalty program
 - Retail Central Bank Digital Currency (rCBDC)
+- Hardware Wallet
 
 ## Specification
 
@@ -83,7 +84,7 @@ The currency **SHOULD** be the token contract `address` or token `symbol`.
 > **MUST** support to pay with `address` **OPTIONAL** `ens`,`phone number`, `email`, `username` or `unique Id`  
 not covering transaction to smart contract with USSD cause application **MAY** update the data frequently.  
 
-- getBlockchainState
+- getBlockchainInfo
 
 ``` json
 "payload": {
@@ -94,10 +95,14 @@ not covering transaction to smart contract with USSD cause application **MAY** u
 ``` json
 "response": {
     "nonce": "<HEX_VALUE>",
-    "gasPrice": "<STRING>",
-    // other e.g.; EIP-1559
+    "gasPrice": "<HEX_VALUE>",
+    "lastBaseFeePerGas": "<HEX_VALUE>",
+    "maxFeePerGas": "<HEX_VALUE>",
+    "maxPriorityFeePerGas": "<HEX_VALUE>"
 }
 ```
+
+If network didn't support [EIP-1559](./eip-1559.md) transaction `lastBaseFeePerGas`, `maxFeePerGas`, and `maxPriorityFeePerGas` **MUST** return `0x00`
 
 - getTransactionByHash
   
