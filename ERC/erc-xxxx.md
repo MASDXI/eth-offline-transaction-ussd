@@ -11,8 +11,10 @@ created: yyyy-mm-dd
 ---
 
 <!-- 
-requires: 155, 137, 191, 681, 712 assuming
+requires: 681
 -->
+
+<!-- what's about ERC-4337 and ERC-7702 -->
 
 ## Motivation
 In scenarios with limited or unreliable internet access, traditional digital payment methods may not be feasible. Unstructured Supplementary Service Data (USSD) provides a vital solution by enabling offline transactions like payments, transfers, and balance inquiries without requiring internet connectivity. Its simplicity and broad compatibility with basic mobile devices and Electronic Draft Capture (EDC) device make USSD an essential tool for mobile payments, particularly in underserved areas, supporting financial inclusion and broader access to digital financial services.
@@ -23,15 +25,14 @@ Use cases for offline payments including
 - Insurance
 - Loyalty program
 - Retail Central Bank Digital Currency (rCBDC)
-- Hardware Wallet
 
 ## Specification
 
 The key words “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”, “SHOULD”, “SHOULD NOT”, “RECOMMENDED”, “NOT RECOMMENDED”, “MAY”, and “OPTIONAL” in this document are to be interpreted as described in RFC 2119 and RFC 8174.
 
-## Partial-sync approach
+### Custodian Wallet
 
-Partially synchronizing with the blockchain network to ensure the client device maintains the latest `nonce`, `gasPrice`, and other. Upon successfully processing a transaction, the system will return the updated `nonce`, `balance`, and other to the user, allowing for continued offline operations with reliable state information.
+With custodian wallet, allowing token movement even when the user lacks direct synchronization with the blockchain network.
 
 ### Schema
 
@@ -39,11 +40,12 @@ Partially synchronizing with the blockchain network to ensure the client device 
 
 ``` json
 "payload": {
-    "chainId": "<HEX_VALUE>",
+    "network": "<STRING>",
+    "sub_id": "<HEX_VALUE>",
     "recipient": "<STRING>",
     "value": "<HEX_VALUE>",
     "currency": "<STRING>",
-    "signedTransaction": "<HEX_VALUE>"
+    "pin": "<STRING>",
 }
 ```
 
@@ -51,21 +53,21 @@ Partially synchronizing with the blockchain network to ensure the client device 
 "response": {
     "balance": "<HEX_VALUE>",
     "currency": "<STRING>",
-    "transactionHash": "<HEX_STRING>",
-    "nonce": "<HEX_VALUE>",
+    "transaction_hash": "<HEX_STRING>",
 }
 ```
 
-`signedTransaction` key is **REQUIRED** for non-custodial wallets.  
-When transferring native tokens, the `currency` key **MUST** be `0x000...000` or `null`.  
-The callback **MUST** return the latest `balance` of the specified `currency` and a `transactionHash` for both custodial and non-custodial wallets. Additionally, the `nonce` is **REQUIRED** only for non-custodial wallets.  
-If the transaction is successful, these details are returned to the `sender`; otherwise, an `error` message is provided.
+When transferring native tokens, the `currency` key **MUST** be `0` or `null`.  
+The callback **MUST** return the latest `balance` of the specified `currency` and a `transactionHash`
+The `currency` **SHOULD** be represented by the token's `symbol`, which is mapped to a `number`, allowing the user to select the token they wish to send.
+If the transaction is successful, these details are returned to the `sender`; otherwise, a `error` message is provided.
 
 - getBalance
   
 ``` json
 "payload": {
-    "chainId": "<HEX_VALUE>",
+    "network": "<STRING>",
+    "sub_id": "<HEX_VALUE>",
     "currency": "<STRING>",
 }
 ```
@@ -77,39 +79,19 @@ If the transaction is successful, these details are returned to the `sender`; ot
 }
 ```
 
-When get balance of native tokens, the `currency` key **MUST** be `0x000...000` or `null`.
+When get balance of native tokens, the `currency` key **MUST** be `0` or `null`.
 The callback **MUST** return the latest `balance` of the specified `currency`.
-The currency **SHOULD** be the token contract `address` or token `symbol`.
 
 > **MUST** support to pay with `address` **OPTIONAL** `ens`,`phone number`, `email`, `username` or `unique Id`  
 not covering transaction to smart contract with USSD cause application **MAY** update the data frequently.  
-
-- getBlockchainInfo
-
-``` json
-"payload": {
-    "chainId": "<HEX_VALUE>",
-}
-```
-
-``` json
-"response": {
-    "nonce": "<HEX_VALUE>",
-    "gasPrice": "<HEX_VALUE>",
-    "lastBaseFeePerGas": "<HEX_VALUE>",
-    "maxFeePerGas": "<HEX_VALUE>",
-    "maxPriorityFeePerGas": "<HEX_VALUE>"
-}
-```
-
-If network didn't support [EIP-1559](./eip-1559.md) transaction `lastBaseFeePerGas`, `maxFeePerGas`, and `maxPriorityFeePerGas` **MUST** return `0x00`
 
 - getTransactionByHash
   
 ``` json
 "payload": {
-    "chainId": "<HEX_VALUE>",
-    "transactionHash": "<HEX_VALUE>"
+    "network": "<STRING>",
+    "sub_id": "<HEX_VALUE>",
+    "transaction_hash": "<HEX_VALUE>"
 }
 ```
 
@@ -118,13 +100,6 @@ If network didn't support [EIP-1559](./eip-1559.md) transaction `lastBaseFeePerG
     // transaction information see eth_getTransactionByHash and eth_getTransactionReceipt
 }
 ```
-
-### Sync-less approach
-
-Explores sending signed transactions to a forwarder without requiring prior synchronization of the `nonce`, and other, while ensuring resistance to replay attacks even in the absence of direct synchronization with the blockchain network.
-
-<!--  Custodian: ERC-681 URL as payload? -->
-<!--  Non-Custodian: Account-Abstraction potentially solve? ERC-4337, ERC-7702 -->
 
 ## Rationale
 
@@ -148,15 +123,10 @@ No backward compatibility issues found.
 
 ## Security Considerations
 
-### USSD Weak Cryptography
-
 <!-- TODO  -->
+<!-- USSD risk see: https://blog.aujas.com/mitigating-ussd-security-risks -->
 <!-- potential quantum resistance solution see: https://www.itu.int/dms_pub/itu-t/opb/tut/T-TUT-PROTO-2021-PDF-E.pdf -->
 
-
-### USSD Replay Attacks
-
-<!-- TODO -->
 
 ## Copyright
 
